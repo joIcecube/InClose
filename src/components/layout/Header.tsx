@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import Button from '../ui/Button';
 import Logo from './Logo';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,17 +25,14 @@ const Header: React.FC = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-const handleLoginClick = () => {
-  if (!isLoggedIn) {
-    // rediriger vers login ou lancer modal
-    window.location.href = "/login"; // ou utiliser react-router
-  } else {
-    // gérer la déconnexion
-    setIsLoggedIn(false);
-  }
-};
+  const handleLoginClick = () => {
+    if (!isLoggedIn) {
+      navigate('/login');
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
 
 
 
@@ -38,7 +40,10 @@ const handleLoginClick = () => {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-dark shadow-lg py-2' : 'bg-transparent py-4'}`}>
       <div className="container mx-auto container-padding">
         <div className="flex items-center justify-between">
+
+        <button onClick={() => navigate('/')}>
           <Logo />
+        </button>
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-8">
@@ -48,9 +53,13 @@ const handleLoginClick = () => {
             <a href="#faq" className="text-gray-300 hover:text-neon-green transition-colors">FAQ</a>
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center space-x-4">
+            <Button onClick={handleLoginClick}>
+              {isLoggedIn ? "Se déconnecter" : "Se connecter"}
+            </Button>
             <Button>Démarrer maintenant</Button>
           </div>
+
 
           {/* Mobile menu button */}
           <button className="md:hidden text-white" onClick={toggleMenu}>

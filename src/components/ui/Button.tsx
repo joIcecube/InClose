@@ -7,6 +7,7 @@ interface ButtonProps {
   className?: string;
   onClick?: () => void;
   fullWidth?: boolean;
+  type?: 'button' | 'submit' | 'reset'; 
 }
 
 const Button: React.FC<ButtonProps> = ({ 
