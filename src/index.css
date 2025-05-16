@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --neon-green: #00ff90;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-gray-950 text-gray-100 font-inter;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-space-grotesk;
+  }
+}
+
+@layer components {
+  .neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 144, 0.7), 
+                 0 0 20px rgba(0, 255, 144, 0.5), 
+                 0 0 30px rgba(0, 255, 144, 0.3);
+  }
+
+  .neon-box {
+    box-shadow: 0 0 10px rgba(0, 255, 144, 0.5), 
+                0 0 20px rgba(0, 255, 144, 0.3), 
+                0 0 30px rgba(0, 255, 144, 0.1);
+  }
+
+  .green-gradient {
+    background: linear-gradient(135deg, #00ff90 0%, #00cc72 100%);
+  }
+
+  .dark-gradient {
+    background: linear-gradient(135deg, #111827 0%, #030712 100%);
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Particle animation background */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 255, 144, 0.3);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+/* Responsive typography */
+@screen sm {
+  h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+}
+
+@screen md {
+  h1 {
+    @apply text-5xl;
+  }
+  h2 {
+    @apply text-4xl;
+  }
+}
+
+@screen lg {
+  h1 {
+    @apply text-6xl;
+  }
+  h2 {
+    @apply text-5xl;
+  }
+}
