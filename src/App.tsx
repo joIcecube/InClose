@@ -1,18 +1,24 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/home';
-import Login from './pages/Login';
+import React from 'react'
+import { ClerkProvider } from '@clerk/clerk-react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Home from './pages/home'
+import SignInPage from './pages/SignInPage'
+import SignUpPage from './pages/SignUpPage'
 
-function App() {
+function App({ publishableKey }: { publishableKey: string }) {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        {/* Ajoute d’autres routes au besoin */}
-      </Routes>
-    </Router>
-  );
+    <ClerkProvider publishableKey={publishableKey}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+        </Routes>
+      </Router>
+    </ClerkProvider>
+  )
 }
 
-export default App;
+export default App
+
+
