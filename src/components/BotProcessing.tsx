@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Bot, CheckCircle2, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useInstagramAuth } from '../store/authStore';
 
-const BotProcessing: React.FC = () => {
+interface BotProcessingProps {
+  onComplete?: () => void;
+}
+
+const BotProcessing: React.FC<BotProcessingProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const sessionToken = useInstagramAuth((state) => state.sessionToken);
   
   const steps = [
     { title: 'Connexion à Instagram', description: 'Établissement d\'une connexion sécurisée' },
@@ -16,6 +22,8 @@ const BotProcessing: React.FC = () => {
   const [activityLogs, setActivityLogs] = useState<string[]>([]);
   
   useEffect(() => {
+    if (!sessionToken) return;
+
     const logs = [
       'Initialisation du bot...',
       'Connexion à l\'API Instagram...',
@@ -38,6 +46,7 @@ const BotProcessing: React.FC = () => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
+          if (onComplete) onComplete();
           return 100;
         }
         return prev + 1;
@@ -45,7 +54,7 @@ const BotProcessing: React.FC = () => {
     }, 300);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [sessionToken, onComplete]);
   
   useEffect(() => {
     if (progress >= 25 && currentStep === 0) setCurrentStep(1);
