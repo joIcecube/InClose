@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Instagram, Loader2 } from 'lucide-react';
 import { useInstagramAuth } from '../store/authStore';
 import Button from './ui/Button';
+import Cookies from 'js-cookie';
 
 const InstagramAuth: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,20 +11,21 @@ const InstagramAuth: React.FC = () => {
 
   const handleInstagramAuth = async () => {
     setIsLoading(true);
-    try {
-      // Simulate Instagram OAuth flow
-      // In production, this would redirect to Instagram's OAuth endpoint
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Simulate receiving a session token
-      // In production, this would come from your backend after OAuth callback
-      const mockSessionToken = 'mock_instagram_session_' + Date.now();
-      setSessionToken(mockSessionToken);
-    } catch (error) {
-      console.error('Instagram authentication failed:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    
+    // Instagram OAuth configuration
+    const clientId = import.meta.env.VITE_INSTAGRAM_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/auth/callback`;
+    const scope = 'user_profile,user_media';
+    
+    // Store state for CSRF protection
+    const state = Math.random().toString(36).substring(7);
+    sessionStorage.setItem('instagram_oauth_state', state);
+    
+    // Construct OAuth URL
+    const authUrl = `https://api.instagram.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=code&state=${state}`;
+    
+    // Redirect to Instagram
+    window.location.href = authUrl;
   };
 
   return (

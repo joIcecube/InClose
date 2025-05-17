@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface InstagramStats {
   followers: number;
@@ -9,6 +11,11 @@ interface InstagramStats {
   engagementRate: number;
   profilePicture: string;
   username: string;
+  mediaInsights: {
+    date: string;
+    views: number;
+    engagement: number;
+  }[];
 }
 
 interface InstagramState {
@@ -16,33 +23,53 @@ interface InstagramState {
   isLoading: boolean;
   error: string | null;
   fetchStats: () => Promise<void>;
+  checkTokenExpiry: () => Promise<boolean>;
 }
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 export const useInstagramStore = create<InstagramState>((set) => ({
   stats: null,
   isLoading: false,
   error: null,
+  
+  checkTokenExpiry: async () => {
+    const token = Cookies.get('instagram_token');
+    if (!token) return false;
+    
+    try {
+      const response = await axios.get(`${API_URL}/api/instagram/verify-token`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data.valid;
+    } catch (error) {
+      Cookies.remove('instagram_token');
+      return false;
+    }
+  },
+  
   fetchStats: async () => {
     set({ isLoading: true });
+    const token = Cookies.get('instagram_token');
+    
+    if (!token) {
+      set({ error: 'No authentication token found', isLoading: false });
+      return;
+    }
+    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await axios.get(`${API_URL}/api/instagram/stats`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       
-      // Mock data - replace with real API call
-      const mockStats: InstagramStats = {
-        followers: 8234,
-        following: 892,
-        posts: 156,
-        closeFriends: 243,
-        storyReach: 1250,
-        engagementRate: 4.8,
-        profilePicture: "https://images.pexels.com/photos/3768911/pexels-photo-3768911.jpeg",
-        username: "@inclose.ai"
-      };
-      
-      set({ stats: mockStats, error: null });
-    } catch (error) {
-      set({ error: 'Failed to fetch Instagram stats' });
+      set({ stats: response.data, error: null });
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        Cookies.remove('instagram_token');
+        set({ error: 'Authentication expired. Please login again.' });
+      } else {
+        set({ error: 'Failed to fetch Instagram stats' });
+      }
     } finally {
       set({ isLoading: false });
     }
