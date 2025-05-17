@@ -6,6 +6,8 @@ import Logo from '../components/layout/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import BotProcessing from '../components/BotProcessing';
+import InstagramAuth from '../components/InstagramAuth';
+import { useInstagramAuth } from '../store/authStore';
 
 interface StatCardProps {
   title: string;
@@ -38,6 +40,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, change, icon, trend }
 
 const Dashboard = () => {
   const [activeView, setActiveView] = useState<'dashboard' | 'bot'>('dashboard');
+  const isAuthenticated = useInstagramAuth((state) => state.isAuthenticated);
   
   const stats = [
     {
@@ -303,7 +306,11 @@ const Dashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <BotProcessing />
+                {isAuthenticated ? (
+                  <BotProcessing onComplete={() => setActiveView('dashboard')} />
+                ) : (
+                  <InstagramAuth />
+                )}
               </motion.div>
             )}
           </AnimatePresence>
