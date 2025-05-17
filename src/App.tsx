@@ -7,15 +7,16 @@ import SignUpPage from './pages/SignUpPage'
 
 function App({ publishableKey }: { publishableKey: string }) {
   return (
-    <ClerkProvider publishableKey={publishableKey}>
-      <Router>
+    
+
+      
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<SignInPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
         </Routes>
-      </Router>
-    </ClerkProvider>
+      
+    
   )
 }
 

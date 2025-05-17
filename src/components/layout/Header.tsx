@@ -47,9 +47,9 @@ const Header: React.FC = () => {
 
           {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#how-it-works" className="text-gray-300 hover:text-neon-green transition-colors">Comment ça marche</a>
-            <a href="#pricing" className="text-gray-300 hover:text-neon-green transition-colors">Tarifs</a>
-            <a href="#testimonials" className="text-gray-300 hover:text-neon-green transition-colors">Témoignages</a>
+            <a href="/#how-it-works" className="text-gray-300 hover:text-neon-green transition-colors">Comment ça marche</a>
+            <a href="/#pricing" className="text-gray-300 hover:text-neon-green transition-colors">Tarifs</a>
+            <a href="/#testimonials" className="text-gray-300 hover:text-neon-green transition-colors">Témoignages</a>
             <a href="#faq" className="text-gray-300 hover:text-neon-green transition-colors">FAQ</a>
           </nav>
 
