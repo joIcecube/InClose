@@ -1,23 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Loader2 } from 'lucide-react';
-import { useInstagramAuth } from '../store/authStore';
 import Button from './ui/Button';
-import Cookies from 'js-cookie';
 
 const InstagramAuth: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const setSessionToken = useInstagramAuth((state) => state.setSessionToken);
 
-  const handleInstagramAuth = async () => {
+  const handleInstagramAuth = () => {
     setIsLoading(true);
     
     // Instagram OAuth configuration
     const clientId = import.meta.env.VITE_INSTAGRAM_CLIENT_ID;
-    const redirectUri = `${window.location.origin}/auth/callback`;
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
     const scope = 'user_profile,user_media';
     
-    // Store state for CSRF protection
+    // Generate and store state for CSRF protection
     const state = Math.random().toString(36).substring(7);
     sessionStorage.setItem('instagram_oauth_state', state);
     
