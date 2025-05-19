@@ -15,7 +15,7 @@ import InstagramProfile from '../components/dashboard/InstagramProfile';
 const Dashboard = () => {
   const [activeView, setActiveView] = useState<'dashboard' | 'bot'>('dashboard');
   const isAuthenticated = useInstagramAuth((state) => state.isAuthenticated);
-  const { stats, fetchStats, isLoading } = useInstagramStore();
+  const { stats, fetchStats } = useInstagramStore();
   
   useEffect(() => {
     if (isAuthenticated) {
