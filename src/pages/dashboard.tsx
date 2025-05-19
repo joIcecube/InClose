@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { UserButton } from '@clerk/clerk-react';
-import { Users, Eye, TrendingUp, Activity, LayoutDashboard, Bot, ChevronRight, Settings, Bell, Search, Heart, MessageCircle } from 'lucide-react';
+import { Users, Eye, Activity, LayoutDashboard, Bot, ChevronRight, Settings, Bell, Search, Heart } from 'lucide-react';
 import BackgroundEffects from '../components/BackgroundEffects';
 import Logo from '../components/layout/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
