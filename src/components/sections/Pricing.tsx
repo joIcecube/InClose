@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Star } from 'lucide-react';
+import { Check } from 'lucide-react';
 import Button from '../ui/Button';
 import AnimatedElement from '../ui/AnimatedElement';
 
