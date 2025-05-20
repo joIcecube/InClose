@@ -1,11 +1,10 @@
-// src/App.tsx
-import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import Home from './pages/home'
 import SignInPage from './pages/SignInPage'
 import SignUpPage from './pages/SignUpPage'
 import Dashboard from './pages/dashboard'
+import InstagramCallback from './components/InstagramCallback'
 
 function App() {
   return (
@@ -33,6 +32,7 @@ function App() {
       />
       <Route path="/login" element={<SignInPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
+      <Route path="/auth/callback" element={<InstagramCallback />} />
     </Routes>
   )
 }
